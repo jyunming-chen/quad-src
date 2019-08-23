@@ -34,17 +34,17 @@ function initCannon() {
 	world.solver.iterations = 10;
 
 	// create airplane body
-	var boxShape = new CANNON.Box(new CANNON.Vec3(SIZE*0.4, SIZE*0.3, SIZE));
+	var boxShape = new CANNON.Box(new CANNON.Vec3(SIZE*0.2, SIZE*0.3, SIZE*1));
 	body = new CANNON.Body({ mass: 5 });
 	body.addShape(boxShape);
 	body.position.set(0,0,0);
 
 	var cylinderShape = new CANNON.Cylinder(SIZE*0.8, SIZE*0.8, SIZE*0.2,50);
 
-	body.addShape(cylinderShape, new CANNON.Vec3( -1.2*SIZE, 0,SIZE));
-	body.addShape(cylinderShape, new CANNON.Vec3( -1.2*SIZE, 0, -SIZE));
-	body.addShape(cylinderShape, new CANNON.Vec3(  1.2*SIZE, 0,-SIZE));
-	body.addShape(cylinderShape, new CANNON.Vec3(  1.2*SIZE, 0, SIZE));
+	body.addShape(cylinderShape, new CANNON.Vec3( -1.0*SIZE, 0,SIZE));
+	body.addShape(cylinderShape, new CANNON.Vec3( -1.0*SIZE, 0, -SIZE));
+	body.addShape(cylinderShape, new CANNON.Vec3(  1.0*SIZE, 0,-SIZE));
+	body.addShape(cylinderShape, new CANNON.Vec3(  1.0*SIZE, 0, SIZE));
 	world.addBody(body);
 
 }
@@ -82,12 +82,12 @@ function initThree() {
 	cylinder[2].material.color = new THREE.Color('purple')
 	cylinder[1].material.color = new THREE.Color('red')
 	cylinder[3].material.color = new THREE.Color('red')
-	cylinder[0].position.set (-1.2*SIZE, 0, SIZE);
-	cylinder[1].position.set (-1.2*SIZE, 0, -SIZE);
-	cylinder[2].position.set ( 1.2*SIZE, 0, -SIZE);
-	cylinder[3].position.set ( 1.2*SIZE, 0, SIZE);
+	cylinder[0].position.set (-1.0*SIZE, 0, SIZE);
+	cylinder[1].position.set (-1.0*SIZE, 0, -SIZE);
+	cylinder[2].position.set ( 1.0*SIZE, 0, -SIZE);
+	cylinder[3].position.set ( 1.0*SIZE, 0, SIZE);
 
-	let mesh = new THREE.Mesh( new THREE.BoxGeometry(SIZE*0.8,SIZE*0.6,SIZE*2), new THREE.MeshNormalMaterial( {wireframe: true } ) );  
+	let mesh = new THREE.Mesh( new THREE.BoxGeometry(SIZE*0.4,SIZE*0.6,SIZE*2), new THREE.MeshNormalMaterial( {wireframe: true } ) );  
 	airplane.add (new THREE.AxesHelper(5));
 	airplane.add(mesh);
 }

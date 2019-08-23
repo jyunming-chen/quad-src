@@ -114,46 +114,6 @@ function init() {
 	omegaHover = Math.sqrt ( body.mass * world.gravity.length()/4/PROP_KK );
 }
 
-/*  
-function hoverServo (dt) {  // pass dt for integral control
-	let yy = body.position.y;
-	let vv = body.velocity.y;
-
-	let error = yref - yy;
-	if (hoverServo.integral === undefined)
-		hoverServo.integral = 0;
-	hoverServo.integral += error*dt;
-
-	const KP = 8;
-	const KI = 7;
-	const KD = 16;
-	let omega = KP*error + KI*hoverServo.integral + KD*(-vv);
-	return omega;
-}
-
-
-function yawServo (dt) {  // pass dt for integral control
-	let error = yawRef - yawAngle;	
-	
-	if (yawServo.integral === undefined)
-		yawServo.integral = 0;
-	yawServo.integral += error*dt;
-	
-	var diff = 0;
-	if (yawServo.lastError !== undefined) {
-	   diff = (error - yawServo.lastError)/dt;
-//	   yawServo.lastError = error;
-	}  
-	yawServo.lastError = error;
-	
-	const KP = .3;
-	const KI = 0//2;  // PD works, but not PID ...
-	const KD = 15;
-	let r = KP*error + KI*yawServo.integral + KD*diff;
-	return r;
-}
-*/
-
 function animate() {
 	let dt = clock.getDelta();
 
@@ -176,10 +136,10 @@ function animate() {
 	body.torque = new CANNON.Vec3(0,0,0);
 	body.angularDamping = 0.39
 
-	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega0*omega0,0), new CANNON.Vec3(-1.2*SIZE, 0, SIZE) )
-	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega1*omega1,0), new CANNON.Vec3(-1.2*SIZE, 0, -SIZE) )
-	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega2*omega2,0), new CANNON.Vec3( 1.2*SIZE, 0, -SIZE) )
-	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega3*omega3,0), new CANNON.Vec3( 1.2*SIZE, 0, SIZE) )	
+	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega0*omega0,0), new CANNON.Vec3(-1.0*SIZE, 0, SIZE) )
+	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega1*omega1,0), new CANNON.Vec3(-1.0*SIZE, 0, -SIZE) )
+	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega2*omega2,0), new CANNON.Vec3( 1.0*SIZE, 0, -SIZE) )
+	body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega3*omega3,0), new CANNON.Vec3( 1.0*SIZE, 0, SIZE) )	
 
 
 	let KT = 0.1;

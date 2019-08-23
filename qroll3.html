@@ -30,16 +30,16 @@
 <body>
 <div id="info">
  <p>Up/Down to Change Hover Altitude;
- Left/Right to Yaw; S/P to Roll; B/S to Pitch</p>
+ Left/Right to Yaw; S/P to Roll; F/A to Pitch</p>
 
- <button id="thrustUp">T+</button>
- <button id="thrustDo">T-</button>
- <button id="cwTurn">y-CW</button>
- <button id="ccwTurn">y-CCW</button>
+ <button id="thrustUp">T-Up</button>
+ <button id="thrustDo">T-Down</button>
+ <button id="cwTurn">y-Left</button>
+ <button id="ccwTurn">y-Right</button>
  <button id="rollRight">r-PORT</button>
  <button id="rollLeft">r-STARBOARD</button>
- <button id="pitchFor">p-BOW</button>
- <button id="pitchBack">p-STERN</button>
+ <button id="pitchFore">p-FORE</button>
+ <button id="pitchAft">p-AFT</button>
  <br>
  <input id="yreftext" type="text" value=2>
  <input type=range min=1 max=10 step="0.1" value = 2 id='gain'>
@@ -149,18 +149,15 @@ function animate() {
   }  
 
 
-// always activate rollServo 
-//  if (! rolling) {
+// always activate rollServo and pitchServo
 
   	rRoll = rollServo (body, dt);
   	rRoll = Math.clamp (rRoll, -omega*0.15, omega*0.15);
 
-//  }
 
- /*
   rPitch = pitchServo (body, dt);
   rPitch = Math.clamp (rPitch, -omega*0.15, omega*0.15);
-*/
+
   
   omega0 = omega - rYaw - rRoll - rPitch;
   omega1 = omega + rYaw - rRoll + rPitch;
@@ -171,10 +168,10 @@ function animate() {
   body.angularDamping = 0.39
   body.linearDamping = 0.39
 
-  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega0*omega0,0), new CANNON.Vec3(-1.2*SIZE, 0, SIZE) )
-  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega1*omega1,0), new CANNON.Vec3(-1.2*SIZE, 0, -SIZE) )
-  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega2*omega2,0), new CANNON.Vec3( 1.2*SIZE, 0, -SIZE) )
-  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega3*omega3,0), new CANNON.Vec3( 1.2*SIZE, 0, SIZE) )	
+  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega0*omega0,0), new CANNON.Vec3(-1.0*SIZE, 0, SIZE) )
+  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega1*omega1,0), new CANNON.Vec3(-1.0*SIZE, 0, -SIZE) )
+  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega2*omega2,0), new CANNON.Vec3( 1.0*SIZE, 0, -SIZE) )
+  body.applyLocalForce (new CANNON.Vec3(0,PROP_KK*omega3*omega3,0), new CANNON.Vec3( 1.0*SIZE, 0, SIZE) )	
 
     
 	let KT = 0.1;
@@ -203,6 +200,7 @@ function handleKeys () {
 	keyboard.update();
 	const RATIO = 1.0003;
 	
+	/////////////////////////////////////////////////////////////
 	// for hovering
 	if (keyboard.pressed('up')) {
 		$('#thrustUp').css ("background-color",  'red');
@@ -226,6 +224,7 @@ function handleKeys () {
 		omegaGain = 1;
 	}
 
+	/////////////////////////////////////////////////////////////
 	// for rolling
 	if (keyboard.pressed('S')) {
 		$('#rollLeft').css ("background-color",  'yellow');
@@ -252,32 +251,34 @@ function handleKeys () {
 		rolling = false;		
 	}
 
+	/////////////////////////////////////////////////////////////
 	// for pitching
-	if (keyboard.pressed('B')) {
-		$('#pitchBow').css ("background-color",  'yellow');
+	if (keyboard.pressed('F')) {
+		$('#pitchFore').css ("background-color",  'yellow');
         //rRoll = omegaHover*0.01;
         //rolling = true;
 		pitchRef = 0.1;
 	}
-	if (keyboard.up('B')) {
-		$('#pitchBow').css ("background-color",  'white');
+	if (keyboard.up('F')) {
+		$('#pitchFore').css ("background-color",  'white');
 		//rRoll = 0;//-omegaHover*0.005;
 		pitchRef = 0;
 		pitching = false;	
 	}
 
-	if (keyboard.pressed('S')) {
-		$('#pitchStern').css ("background-color",  'yellow');
+	if (keyboard.pressed('A')) {
+		$('#pitchAft').css ("background-color",  'yellow');
         //rRoll = - omegaHover*0.01;
         //rolling = true;
         pitchRef = -0.1;
 	}
-	if (keyboard.up('S')) {
-		$('#pitchStern').css ("background-color",  'white');
+	if (keyboard.up('A')) {
+		$('#pitchAft').css ("background-color",  'white');
 		pitchRef = 0;
 		pitching = false;		
 	}
 
+	/////////////////////////////////////////////////////////////
 	// for yawing
 	if (keyboard.pressed('left')) {
 		$('#cwTurn').css ("background-color",  'yellow');
@@ -323,7 +324,6 @@ function updatePhysics() {
   airplane.quaternion.copy(body.quaternion);
     
   yawAngle = getBodyYaw2(body);
-  //console.log ((yawAngle/Math.PI*180).toFixed(2));
   
   rollAngle = getBodyRoll2(body);
   
